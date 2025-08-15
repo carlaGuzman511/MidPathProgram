@@ -5,14 +5,13 @@ import com.midpath.notesapp.dto.requests.RegisterRequest;
 import com.midpath.notesapp.dto.responses.AuthResponse;
 import com.midpath.notesapp.entity.enums.Role;
 import com.midpath.notesapp.entity.User;
+import com.midpath.notesapp.interfaces.service.IAuthService;
 import com.midpath.notesapp.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +19,11 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
-public class AuthService {
+public class AuthService implements IAuthService {
     private final AuthenticationManager authManager;
     private final UserRepository users;
     private final PasswordEncoder encoder;
     private final JwtService jwt;
-
-    //@Bean
-    //public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
     public AuthResponse register(RegisterRequest req) {
         if (users.existsByUsername(req.username())) throw new IllegalArgumentException("Username taken");

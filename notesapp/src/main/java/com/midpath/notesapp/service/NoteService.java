@@ -5,6 +5,8 @@ import com.midpath.notesapp.dto.responses.NoteResponse;
 import com.midpath.notesapp.entity.Note;
 import com.midpath.notesapp.entity.Tag;
 import com.midpath.notesapp.entity.User;
+import com.midpath.notesapp.interfaces.service.INoteService;
+import com.midpath.notesapp.interfaces.service.generics.*;
 import com.midpath.notesapp.repository.NoteRepository;
 import com.midpath.notesapp.repository.TagRepository;
 
@@ -20,12 +22,17 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class NoteService {
-
+public class NoteService implements INoteService,
+        IRead<User, NoteResponse, Long>,
+        ICreate<User, NoteResponse, NoteRequest>,
+        IRemove<User, Long>,
+        IUpdate<User, NoteRequest, NoteResponse, Long>
+{
     private final NoteRepository noteRepository;
     private final TagRepository tagRepository;
 
-    public NoteResponse createNote(User currentUser, NoteRequest request) {
+    @Override
+    public NoteResponse create(User currentUser, NoteRequest request) {
         Set<Tag> tags = new HashSet<>();
 
         if (request.getTagIds() != null && !request.getTagIds().isEmpty()) {
@@ -44,11 +51,16 @@ public class NoteService {
         return mapToResponse(saved);
     }
 
-    public List<NoteResponse> getNotes(User currentUser, String title, Long tagId, Boolean archived) {
+    @Override
+    public List<NoteResponse> getAll(User currentUser, String title, Long tagId, Boolean archived, String content) {
         Specification<Note> spec = Specification.allOf(ownerIs(currentUser));
 
         if (title != null && !title.isBlank()) {
             spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
+        }
+
+        if (content != null && !content.isBlank()) {
+            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("content")), "%" + content.toLowerCase() + "%"));
         }
 
         if (archived != null) {
@@ -64,13 +76,15 @@ public class NoteService {
                 .collect(Collectors.toList());
     }
 
-    public NoteResponse getNoteById(User currentUser, Long id) {
+    @Override
+    public NoteResponse getById(User currentUser, Long id) {
         Note note = noteRepository.findByIdAndOwner(id, currentUser)
                 .orElseThrow(() -> new EntityNotFoundException("Note not found"));
         return mapToResponse(note);
     }
 
-    public NoteResponse updateNote(User currentUser, Long id, NoteRequest request) {
+    @Override
+    public NoteResponse update(User currentUser, Long id, NoteRequest request) {
         Note note = noteRepository.findByIdAndOwner(id, currentUser)
                 .orElseThrow(() -> new EntityNotFoundException("Note not found"));
 
@@ -86,20 +100,23 @@ public class NoteService {
         return mapToResponse(updated);
     }
 
-    public void deleteNote(User currentUser, Long id) {
+    @Override
+    public void remove(User currentUser, Long id) {
         Note note = noteRepository.findByIdAndOwner(id, currentUser)
                 .orElseThrow(() -> new EntityNotFoundException("Note not found"));
         noteRepository.delete(note);
     }
 
-    public NoteResponse archiveNote(User currentUser, Long id) {
+    @Override
+    public NoteResponse archive(User currentUser, Long id) {
         Note note = noteRepository.findByIdAndOwner(id, currentUser)
                 .orElseThrow(() -> new EntityNotFoundException("Note not found"));
         note.setArchived(true);
         return mapToResponse(noteRepository.save(note));
     }
 
-    public NoteResponse unarchiveNote(User currentUser, Long id) {
+    @Override
+    public NoteResponse unarchive(User currentUser, Long id) {
         Note note = noteRepository.findByIdAndOwner(id, currentUser)
                 .orElseThrow(() -> new EntityNotFoundException("Note not found"));
         note.setArchived(false);

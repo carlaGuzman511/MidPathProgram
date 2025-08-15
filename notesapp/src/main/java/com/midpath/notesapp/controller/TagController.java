@@ -1,8 +1,6 @@
 package com.midpath.notesapp.controller;
 
-import com.midpath.notesapp.dto.requests.NoteRequest;
 import com.midpath.notesapp.dto.requests.TagRequest;
-import com.midpath.notesapp.dto.responses.NoteResponse;
 import com.midpath.notesapp.dto.responses.TagResponse;
 import com.midpath.notesapp.entity.User;
 import com.midpath.notesapp.service.TagService;
@@ -22,26 +20,32 @@ public class TagController {
     private final TagService tagService;
 
     @PostMapping
-    public ResponseEntity<TagResponse> createTag(@Valid @RequestBody TagRequest request) {
-        return ResponseEntity.ok(tagService.createTag(request));
+    public ResponseEntity<TagResponse> createTag(
+            @AuthenticationPrincipal User currentUser,
+            @Valid @RequestBody TagRequest request) {
+        return ResponseEntity.ok(tagService.create(currentUser, request));
     }
 
     @GetMapping
-    public ResponseEntity<List<TagResponse>> getAllTags() {
-        return ResponseEntity.ok(tagService.getAllTags());
+    public ResponseEntity<List<TagResponse>> getAllTags(
+            @AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(tagService.getAll(currentUser));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTag(@PathVariable Long id) {
-        tagService.deleteTag(id);
+    public ResponseEntity<Void> deleteTag(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable Long id) {
+        tagService.remove(currentUser, id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TagResponse> updateNote(
+            @AuthenticationPrincipal User currentUser,
             @PathVariable Long id,
             @Valid @RequestBody TagRequest request
     ) {
-        return ResponseEntity.ok(tagService.updateTag(id, request));
+        return ResponseEntity.ok(tagService.update(currentUser, id, request));
     }
 }

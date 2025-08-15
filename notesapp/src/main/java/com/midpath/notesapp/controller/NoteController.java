@@ -24,7 +24,7 @@ public class NoteController {
             @AuthenticationPrincipal User currentUser,
             @Valid @RequestBody NoteRequest request
     ) {
-        return ResponseEntity.ok(noteService.createNote(currentUser, request));
+        return ResponseEntity.ok(noteService.create(currentUser, request));
     }
 
     @GetMapping
@@ -32,9 +32,10 @@ public class NoteController {
             @AuthenticationPrincipal User currentUser,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Long tagId,
-            @RequestParam(required = false) Boolean archived
+            @RequestParam(required = false) Boolean archived,
+            @RequestParam(required = false) String content
     ) {
-        return ResponseEntity.ok(noteService.getNotes(currentUser, title, tagId, archived));
+        return ResponseEntity.ok(noteService.getAll(currentUser, title, tagId, archived, content));
     }
 
     @GetMapping("/{id}")
@@ -42,7 +43,7 @@ public class NoteController {
             @AuthenticationPrincipal User currentUser,
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(noteService.getNoteById(currentUser, id));
+        return ResponseEntity.ok(noteService.getById(currentUser, id));
     }
 
     @PutMapping("/{id}")
@@ -51,7 +52,7 @@ public class NoteController {
             @PathVariable Long id,
             @Valid @RequestBody NoteRequest request
     ) {
-        return ResponseEntity.ok(noteService.updateNote(currentUser, id, request));
+        return ResponseEntity.ok(noteService.update(currentUser, id, request));
     }
 
     @DeleteMapping("/{id}")
@@ -59,7 +60,7 @@ public class NoteController {
             @AuthenticationPrincipal User currentUser,
             @PathVariable Long id
     ) {
-        noteService.deleteNote(currentUser, id);
+        noteService.remove(currentUser, id);
         return ResponseEntity.noContent().build();
     }
 
@@ -68,7 +69,7 @@ public class NoteController {
             @AuthenticationPrincipal User currentUser,
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(noteService.archiveNote(currentUser, id));
+        return ResponseEntity.ok(noteService.archive(currentUser, id));
     }
 
     @PatchMapping("/{id}/unarchive")
@@ -76,6 +77,6 @@ public class NoteController {
             @AuthenticationPrincipal User currentUser,
             @PathVariable Long id
     ) {
-        return ResponseEntity.ok(noteService.unarchiveNote(currentUser, id));
+        return ResponseEntity.ok(noteService.unarchive(currentUser, id));
     }
 }
