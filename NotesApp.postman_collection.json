@@ -1,0 +1,497 @@
+{
+	"info": {
+		"_postman_id": "de91b711-0520-496d-b0c6-3c4b0aca0f76",
+		"name": "NotesApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11361601"
+	},
+	"item": [
+		{
+			"name": "Notes",
+			"item": [
+				{
+					"name": "CreateNote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"task 5\",\r\n    \"content\": \"java test\",\r\n    \"tagIds\": [1, 3]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{uri}}/{{api}}/notes",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateNote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"task 3\",\r\n    \"content\": \"c# test\",\r\n    \"tags\": [8]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{uri}}/{{api}}/notes/1",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"notes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetNotes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{uri}}/{{api}}/notes",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"notes"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "task",
+									"disabled": true
+								},
+								{
+									"key": "content",
+									"value": "test",
+									"disabled": true
+								},
+								{
+									"key": "tagId",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "carla@examples.com",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetNoteById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{uri}}/{{api}}/notes/3",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"notes",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveNote",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{uri}}/{{api}}/notes/1",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"notes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Archive",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{uri}}/{{api}}/notes/1/archive",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"notes",
+								"1",
+								"archive"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UnArchive",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{uri}}/{{api}}/notes/1/unarchive",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"notes",
+								"1",
+								"unarchive"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "CreateTag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"borrar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{uri}}/{{api}}/tags",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateTag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"in-progress\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{uri}}/{{api}}/tags/2",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"tags",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveTag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{uri}}/{{api}}/tags/2",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"tags",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllTags",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{uri}}/{{api}}/tags",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"felipe\",\r\n    \"email\":\"felipe@example.com\",\r\n    \"password\":\"felipe123!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{uri}}/{{api}}/auth/register",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token\", jsonData.accessToken);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usernameOrEmail\": \"felipe@example.com\",\r\n    \"password\":\"felipe123!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{uri}}/{{api}}/auth/login",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
