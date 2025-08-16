@@ -26,7 +26,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"task 5\",\r\n    \"content\": \"java test\",\r\n    \"tagIds\": [1, 3]\r\n}",
+							"raw": "{\r\n    \"title\": \"english test\",\r\n    \"content\": \"english test\",\r\n    \"tagIds\": [7]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -71,14 +71,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{uri}}/{{api}}/notes/1",
+							"raw": "{{uri}}/{{api}}/notes/3",
 							"host": [
 								"{{uri}}"
 							],
 							"path": [
 								"{{api}}",
 								"notes",
-								"1"
+								"3"
 							]
 						}
 					},
@@ -135,6 +135,68 @@
 					"response": []
 				},
 				{
+					"name": "GetNoteVersions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{uri}}/{{api}}/notes/5/versions",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"notes",
+								"5",
+								"versions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Revert-NoteVersion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{uri}}/{{api}}/notes/1/versions/1/revert",
+							"host": [
+								"{{uri}}"
+							],
+							"path": [
+								"{{api}}",
+								"notes",
+								"1",
+								"versions",
+								"1",
+								"revert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GetNoteById",
 					"request": {
 						"auth": {
@@ -150,14 +212,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{uri}}/{{api}}/notes/3",
+							"raw": "{{uri}}/{{api}}/notes/5",
 							"host": [
 								"{{uri}}"
 							],
 							"path": [
 								"{{api}}",
 								"notes",
-								"3"
+								"5"
 							]
 						}
 					},
@@ -179,14 +241,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{uri}}/{{api}}/notes/1",
+							"raw": "{{uri}}/{{api}}/notes/3",
 							"host": [
 								"{{uri}}"
 							],
 							"path": [
 								"{{api}}",
 								"notes",
-								"1"
+								"3"
 							]
 						}
 					},
@@ -217,14 +279,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{uri}}/{{api}}/notes/1/archive",
+							"raw": "{{uri}}/{{api}}/notes/3/archive",
 							"host": [
 								"{{uri}}"
 							],
 							"path": [
 								"{{api}}",
 								"notes",
-								"1",
+								"3",
 								"archive"
 							]
 						}
@@ -283,7 +345,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"borrar\"\r\n}",
+							"raw": "{\r\n    \"name\": \"on hold\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -320,7 +382,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"in-progress\"\r\n}",
+							"raw": "{\r\n    \"name\": \"completado\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -328,14 +390,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{uri}}/{{api}}/tags/2",
+							"raw": "{{uri}}/{{api}}/tags/1",
 							"host": [
 								"{{uri}}"
 							],
 							"path": [
 								"{{api}}",
 								"tags",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -416,7 +478,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"felipe\",\r\n    \"email\":\"felipe@example.com\",\r\n    \"password\":\"felipe123!\"\r\n}",
+							"raw": "{\r\n    \"username\": \"jorge\",\r\n    \"email\": \"jorge@example.com\",\r\n    \"password\" :\"jorge123!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -464,7 +526,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"usernameOrEmail\": \"felipe@example.com\",\r\n    \"password\":\"felipe123!\"\r\n}",
+							"raw": "{\r\n    \"usernameOrEmail\": \"jorge@example.com\",\r\n    \"password\":\"jorge123!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

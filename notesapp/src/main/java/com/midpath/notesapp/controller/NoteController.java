@@ -2,6 +2,7 @@ package com.midpath.notesapp.controller;
 
 import com.midpath.notesapp.dto.requests.NoteRequest;
 import com.midpath.notesapp.dto.responses.NoteResponse;
+import com.midpath.notesapp.dto.responses.NoteVersionResponse;
 import com.midpath.notesapp.entity.User;
 import com.midpath.notesapp.service.NoteService;
 import jakarta.validation.Valid;
@@ -78,5 +79,20 @@ public class NoteController {
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(noteService.unarchive(currentUser, id));
+    }
+
+    @GetMapping("/{noteId}/versions")
+    public List<NoteVersionResponse> versions(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable Long noteId) {
+        return noteService.getVersions(currentUser, noteId);
+    }
+
+    @PostMapping("/{noteId}/versions/{versionId}/revert")
+    public NoteResponse revert(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable Long noteId,
+            @PathVariable Long versionId) {
+        return noteService.revertToVersion(currentUser, noteId, versionId);
     }
 }
