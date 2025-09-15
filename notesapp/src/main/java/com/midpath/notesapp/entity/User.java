@@ -1,5 +1,6 @@
 package com.midpath.notesapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.midpath.notesapp.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,6 +13,7 @@ import java.util.*;
 @Entity
 @Table(name = "users")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

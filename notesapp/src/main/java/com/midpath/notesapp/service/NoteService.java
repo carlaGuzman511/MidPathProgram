@@ -1,5 +1,9 @@
 package com.midpath.notesapp.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.midpath.notesapp.dto.requests.NoteRequest;
@@ -24,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +42,14 @@ public class NoteService implements INoteService,
     private final NoteVersionRepository noteVersionRepository;
     private final NoteRepository noteRepository;
     private final TagRepository tagRepository;
+    private final RedisTemplate<String, Note> redisTemplate;
 
+    private String getCacheKey(Long id) {
+        return "note:" + id;
+    }
+
+    // Write-Through save in db and cache
+    // @CachePut(value = "notes", key = "#result.id")
     @Override
     public NoteResponse create(User currentUser, NoteRequest request) {
         Set<Tag> tags = new HashSet<>();
@@ -53,8 +65,9 @@ public class NoteService implements INoteService,
                 .owner(currentUser)
                 .tags(tags)
                 .build();
-
         Note saved = noteRepository.save(note);
+        // redisTemplate.opsForValue().set(getCacheKey(saved.getId()), saved, 10, TimeUnit.MINUTES);
+
         return mapToResponse(saved);
     }
 
@@ -83,13 +96,28 @@ public class NoteService implements INoteService,
                 .collect(Collectors.toList());
     }
 
+    // Cache-Aside, search in redis otherwise get it from the db
+    // @Cacheable(value = "notes", key = "#id")
     @Override
     public NoteResponse getById(User currentUser, Long id) {
+        // String key = getCacheKey(id);
+
+        // Note cached = redisTemplate.opsForValue().get(key);
+        // if (cached != null) {
+        //     System.out.println("Cache HIT");
+        //     return mapToResponse(cached);
+        // }
+
+        // System.out.println("Cache MISS → DB");
         Note note = noteRepository.findByIdAndOwner(id, currentUser)
                 .orElseThrow(() -> new EntityNotFoundException("Note not found"));
+        // redisTemplate.opsForValue().set(key, note, 10, TimeUnit.MINUTES);
+
         return mapToResponse(note);
     }
 
+    // Write-Through update db and cache
+    // @CachePut(value = "notes", key = "#id")
     @Transactional
     @Override
     public NoteResponse update(User currentUser, Long id, NoteRequest request) {
@@ -116,10 +144,13 @@ public class NoteService implements INoteService,
         }
 
         Note updated = noteRepository.save(note);
+        // redisTemplate.opsForValue().set(getCacheKey(id), updated, 10, TimeUnit.MINUTES);
+
         return mapToResponse(updated);
     }
 
-
+    // Write-Through remove on db and cache
+    // @CacheEvict(value = "notes", key = "#id")
     @Transactional
     @Override
     public void remove(User currentUser, Long id) {
@@ -127,6 +158,7 @@ public class NoteService implements INoteService,
                 .orElseThrow(() -> new EntityNotFoundException("Note not found"));
 
         noteRepository.delete(note);
+        // redisTemplate.delete(getCacheKey(id));
     }
 
     @Transactional
